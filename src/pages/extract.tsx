@@ -2,21 +2,19 @@ import { SearchResult } from 'components/SearchResult'
 import Head from 'next/head'
 import { useState } from 'react'
 import { Button, Col, Container, Form, InputGroup, Row, Spinner } from 'react-bootstrap'
-import { AnimationsResponse } from 'types/Response'
-
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+import { ExtractResponse } from 'types/Response'
 
 const getAnimationsByID = async (id: string) => {
   if (id === '') {
     return
   }
-  const res = await fetch(`${baseUrl}/extract/${id}`)
-  const animationsResponse = (await res.json()) as AnimationsResponse
+  const res = await fetch(`api/extract/${id}`)
+  const animationsResponse = (await res.json()) as ExtractResponse
   if (animationsResponse.result.length <= 0) {
     alert(`'${id}' not exists`)
     return
   }
-  const columns = ['#', 'AnimationName', 'Image', 'Reversed Image']
+  const columns = ['#', 'Animation Name', 'Image', 'Flip Horizontal']
   const data = animationsResponse.result.map((elem, index) => [
     <>{index + 1}</>,
     <>{elem.animationName}</>,

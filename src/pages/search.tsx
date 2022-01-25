@@ -4,13 +4,11 @@ import { NameResponse, IdsResponse } from 'types/Response'
 import { SearchResult } from 'components/SearchResult'
 import Head from 'next/head'
 
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
-
 const getNameById = async (id: string) => {
   if (id === '') {
     return
   }
-  const res = await fetch(`${baseUrl}/name/${id}`)
+  const res = await fetch(`/api/name/${id}`)
   const nameResponse = (await res.json()) as NameResponse
   if (!nameResponse.result) {
     alert(`'${id}' is not found`)
@@ -25,7 +23,7 @@ const getIdsByPartialName = async (name: string) => {
   if (name === '') {
     return
   }
-  const res = await fetch(`${baseUrl}/ids/${name}`)
+  const res = await fetch(`/api/ids/${name}`)
   const idsResponse = (await res.json()) as IdsResponse
   if (idsResponse.result.length <= 0) {
     alert(`'${name}' is not found`)
@@ -54,7 +52,12 @@ const radios = [
     placeholder: 'メイプルキノコ',
     searchFunc: getIdsByPartialName
   },
-  { name: 'by ID', value: '1', placeholder: '1210102', searchFunc: getNameById }
+  {
+    name: 'by ID',
+    value: '1',
+    placeholder: '1210102',
+    searchFunc: getNameById
+  }
 ]
 
 const Search = () => {
@@ -84,7 +87,6 @@ const Search = () => {
                   onClick={(e) => {
                     e.currentTarget.blur()
                     setRadioVal(radio.value)
-                    setInputVal('')
                     setPlaceholder(radio.placeholder)
                     setResult(undefined)
                   }}
@@ -146,7 +148,7 @@ const Search = () => {
             {result && (
               <>
                 <h3 className="pt-4">Result</h3>
-                {`${result.data.length} element(s) hit.`}
+                {`${result.data.length - 1} element(s) hit.`}
                 <SearchResult columns={result.columns} data={result.data} />
               </>
             )}

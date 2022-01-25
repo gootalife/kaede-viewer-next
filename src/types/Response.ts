@@ -18,12 +18,12 @@ export interface NameResponse {
   result: NameItem
 }
 
-export interface AnimationsResponse {
+export interface ExtractResponse {
   type: 'AnimationResponse'
-  result: AnimationItem[]
+  result: ExtractItem[]
 }
 
-export interface AnimationItem {
+export interface ExtractItem {
   animationName: string
   imageStr: string
 }
